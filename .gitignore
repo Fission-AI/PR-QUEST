@@ -58,6 +58,7 @@ web_modules/
 
 # Optional REPL history
 .node_repl_history
+.pnpm-debug.log*
 
 # Output of 'npm pack'
 *.tgz
@@ -69,6 +70,8 @@ web_modules/
 .env
 .env.*
 !.env.example
+.env.local
+*.pem
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -118,6 +121,7 @@ dist
 
 # Firebase cache directory
 .firebase/
+.vercel
 
 # TernJS port file
 .tern-port
@@ -126,6 +130,7 @@ dist
 .vscode-test
 
 # yarn v3
+/.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
