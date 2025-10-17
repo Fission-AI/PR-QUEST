@@ -90,10 +90,10 @@ function buildDiffLookup(diffText: string) {
 export function StepViewer({ plan, diffText, initialStepIndex, onStepChange }: StepViewerProps) {
   const steps = plan.steps;
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isRightOpen, setRightOpen] = useState(false);
+  
   const [focusMode, setFocusMode] = useState(false);
   const [viewType, setViewType] = useState<"split" | "unified">("split");
-  const [notesByHunk, setNotesByHunk] = useState<Map<string, string[]>>(new Map());
+  
   const stepKey = useMemo(
     () => steps.map((step) => step.step_id).join("|"),
     [steps],
@@ -296,9 +296,6 @@ export function StepViewer({ plan, diffText, initialStepIndex, onStepChange }: S
       {/* Main Toolbar */}
       <div className="step-viewer__toolbar" role="toolbar" aria-label="Review toolbar">
         <div className="step-viewer__toolbar-left">
-          <button type="button" className="pixel-button" onClick={() => setRightOpen((v) => !v)} aria-pressed={isRightOpen}>
-            {isRightOpen ? "Hide Details" : "Show Details"}
-          </button>
         </div>
 
         <div className="step-viewer__toolbar-center">
@@ -316,7 +313,7 @@ export function StepViewer({ plan, diffText, initialStepIndex, onStepChange }: S
 
       <kbd className="sr-only" aria-hidden>shortcuts active</kbd>
 
-      <div className={`step-viewer__body${!isRightOpen ? " step-viewer__body--right-collapsed" : ""}`}>
+      <div className="step-viewer__body">
         <div className="step-viewer__main" aria-live="polite">
           {activeStep ? (
             <>
@@ -379,7 +376,7 @@ export function StepViewer({ plan, diffText, initialStepIndex, onStepChange }: S
                         <div>
                           {entry.hunks.map((hunk, hIndex) => {
                             const anchorId = `${entry.file.fileId}__${hunk.oldStart}_${hunk.newStart}_${hIndex}`;
-                            const noteCount = notesByHunk.get(anchorId)?.length ?? 0;
+                            
                             return (
                               <details key={anchorId} id={anchorId} open>
                                 <summary>
@@ -411,60 +408,6 @@ export function StepViewer({ plan, diffText, initialStepIndex, onStepChange }: S
             <p className="text-muted-brown">Select a step from the left to view its details.</p>
           )}
         </div>
-        <aside className="step-viewer__right" hidden={!isRightOpen || focusMode}>
-          <div className="step-viewer__right-inner">
-            <h4 className="pixel-heading" style={{ fontSize: 12 }}>Details</h4>
-            {activeStep ? (
-              <div>
-                <p className="text-muted-brown">Outline</p>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                  {stepFiles.flatMap((entry) => {
-                    if (entry.status !== "ready") return [] as React.ReactElement[];
-                    return entry.hunks.map((hunk, idx) => {
-                      const anchorId = `${entry.file.fileId}__${hunk.oldStart}_${hunk.newStart}_${idx}`;
-                      const count = notesByHunk.get(anchorId)?.length ?? 0;
-                      return (
-                        <li key={anchorId}>
-                          <button
-                            type="button"
-                            className="pixel-button"
-                            onClick={() => {
-                              const el = document.getElementById(anchorId);
-                              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                            }}
-                          >
-                            {entry.file.label}: {hunk.oldStart}/{hunk.newStart} ({count})
-                          </button>
-                        </li>
-                      );
-                    });
-                  })}
-                </ul>
-                <div style={{ marginTop: "0.75rem" }}>
-                  <p className="text-muted-brown">Notes</p>
-                  {[...notesByHunk.entries()].length === 0 ? (
-                    <p className="text-muted-brown">No notes yet.</p>
-                  ) : (
-                    <ul style={{ listStyle: "disc", paddingLeft: "1.25rem" }}>
-                      {[...notesByHunk.entries()].map(([hid, arr]) => (
-                        <li key={hid}>
-                          <code>{hid}</code>
-                          <ul>
-                            {arr.map((t, i) => (
-                              <li key={i}>{t}</li>
-                            ))}
-                          </ul>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <p className="text-muted-brown">Select a step to see outline.</p>
-            )}
-          </div>
-        </aside>
       </div>
     </section>
 
