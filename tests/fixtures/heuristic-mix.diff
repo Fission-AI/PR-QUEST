@@ -1,0 +1,62 @@
+diff --git a/docs/guide.md b/docs/guide.md
+index 1111111..2222222 100644
+--- a/docs/guide.md
++++ b/docs/guide.md
+@@ -1,3 +1,4 @@
+-Old intro
+-Another line
++Updated intro
++Another line
++Usage tips
+ Final line
+
+diff --git a/src/__tests__/user.test.ts b/src/__tests__/user.test.ts
+index 3333333..4444444 100644
+--- a/src/__tests__/user.test.ts
++++ b/src/__tests__/user.test.ts
+@@ -1,5 +1,7 @@
+ import { describe, expect, it } from "vitest";
+ 
+ describe("user", () => {
+   it("creates a profile", () => {
+-    expect(true).toBe(false);
++    expect(true).toBe(true);
+   });
++  it("handles validation", () => {});
+ });
+
+diff --git a/package.json b/package.json
+index abcdef0..abcdef1 100644
+--- a/package.json
++++ b/package.json
+@@ -1,5 +1,6 @@
+ {
+   "name": "example",
+-  "version": "1.0.0"
++  "version": "1.0.1",
++  "description": "Example project"
+ }
+
+diff --git a/src/components/Button.tsx b/src/components/Button.tsx
+index 5555555..6666666 100644
+--- a/src/components/Button.tsx
++++ b/src/components/Button.tsx
+@@ -1,3 +1,5 @@
+ export function Button() {
+-  return <button>Click</button>;
++  return <button className="btn">Click</button>;
++}
++
++export function ButtonLabel() {
++  return "Click";
+ }
+
+diff --git a/app/page.tsx b/app/page.tsx
+index 7777777..8888888 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,3 +1,3 @@
+ export default function Page() {
+-  return <main>Hello</main>;
++  return <main>Hello Quest</main>;
+ }

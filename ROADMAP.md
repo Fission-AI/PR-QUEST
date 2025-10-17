@@ -37,81 +37,81 @@ This roadmap turns the PRD into iterative, testable phases. Each phase ships a w
 ## Phase 1 — PR URL Input & Validation
 - **Goal**: Accept a public GitHub PR URL and validate.
 - **Scope**:
-  - [ ] Input form with URL parsing.
-  - [ ] Server validator to ensure public PR and `.diff` endpoint derivation.
+  - [x] Input form with URL parsing.
+  - [x] Server validator to ensure public PR and `.diff` endpoint derivation.
 - **Deliverables**:
-  - [ ] Derive `https://github.com/<org>/<repo>/pull/<id>.diff` from input.
+  - [x] Derive `https://github.com/<org>/<repo>/pull/<id>.diff` from input.
 - **Tests**:
-  - [ ] Unit: URL parser (good/bad cases).
-- [ ] **Acceptance**: Valid PR URL enables “Analyze” and previews derived `.diff` URL.
+  - [x] Unit: URL parser (good/bad cases).
+- [x] **Acceptance**: Valid PR URL enables “Analyze” and previews derived `.diff` URL.
 
 ---
 
 ## Phase 2 — Diff Fetch API Route
 - **Goal**: Fetch raw `.diff` via server API.
 - **Scope**:
-  - [ ] `GET /api/diff?prUrl=…` → fetch `.diff` with unauthenticated GitHub request.
-  - [ ] Handle rate limits and large diffs (size cap + friendly error).
+  - [x] `GET /api/diff?prUrl=…` → fetch `.diff` with unauthenticated GitHub request.
+  - [x] Handle rate limits and large diffs (size cap + friendly error).
 - **Deliverables**:
-  - [ ] Returns raw unified diff as text; standard error envelope.
+  - [x] Returns raw unified diff as text; standard error envelope.
 - **Tests**:
-  - [ ] Unit: input validation; 4xx/5xx handling.
-  - [ ] Integration: fixture-backed response using MSW.
-- [ ] **Acceptance**: API returns diff for known fixture within <3s locally.
+  - [x] Unit: input validation; 4xx/5xx handling.
+  - [x] Integration: fixture-backed response using MSW.
+- [x] **Acceptance**: API returns diff for known fixture within <3s locally.
 
 ---
 
 ## Phase 3 — Diff Parsing & Index Builder
 - **Goal**: Unified diff → normalized `diff_index` per PRD.
 - **Scope**:
-  - [ ] Parse files, statuses, languages (by extension), and hunks.
-  - [ ] Generate stable `file_id` and `hunk_id` (`<path>#h<seq>`).
+  - [x] Parse files, statuses, languages (by extension), and hunks.
+  - [x] Generate stable `file_id` and `hunk_id` (`<path>#h<seq>`).
 - **Deliverables**:
-  - [ ] `diff_index.json` matching PRD section 10.
+  - [x] `diff_index.json` matching PRD section 10.
 - **Tests**:
-  - [ ] Snapshots on fixtures (single file, rename, binary skip, many hunks).
-- [ ] **Acceptance**: Stable IDs and correct hunk headers for fixtures.
+  - [x] Snapshots on fixtures (single file, rename, binary skip, many hunks).
+- [x] **Acceptance**: Stable IDs and correct hunk headers for fixtures.
 
 ---
 
 ## Phase 4 — Heuristic Grouping (LLM-free Baseline)
 - **Goal**: 2–6 coherent steps using heuristics only.
 - **Scope**:
-  - [ ] Cluster by path prefixes, file types, keywords in headers/paths.
-  - [ ] Output PRD “LLM Output Schema” without model call.
+  - [x] Cluster by path prefixes, file types, keywords in headers/paths.
+  - [x] Output PRD “LLM Output Schema” without model call.
 - **Deliverables**:
-  - [ ] `steps[]` with titles/descriptions/objectives and `diff_refs` → `file_id` + `hunk_ids`.
+  - [x] `steps[]` with titles/descriptions/objectives and `diff_refs` → `file_id` + `hunk_ids`.
 - **Tests**:
-  - [ ] Zod validation of schema; deterministic grouping for fixtures.
-- [ ] **Acceptance**: Typical PR fixture yields 2–6 sensible steps.
+  - [x] Zod validation of schema; deterministic grouping for fixtures.
+- [x] **Acceptance**: Typical PR fixture yields 2–6 sensible steps.
 
 ---
 
 ## Phase 5 — LLM Grouping via AI SDK
 - **Goal**: Replace/augment heuristics with model-backed organization.
 - **Scope**:
-  - [ ] Use `ai` with `@ai-sdk/openai`; prompt per PRD section 11.
-  - [ ] Structured outputs via `generateObject` + Zod schema; auto-retry on schema mismatch.
-  - [ ] Feature flag to toggle heuristic-only vs LLM.
+  - [x] Use `ai` with `@ai-sdk/openai`; prompt per PRD section 11.
+  - [x] Structured outputs via `generateObject` + Zod schema; auto-retry on schema mismatch.
+  - [x] Feature flag to toggle heuristic-only vs LLM.
 - **Deliverables**:
-  - [ ] `POST /api/group` takes `{ diffIndex, metadata }` and returns PRD-compliant JSON.
+  - [x] `POST /api/group` takes `{ diffIndex, metadata }` and returns PRD-compliant JSON.
 - **Tests**:
-  - [ ] Unit: schema validation; retry logic via mocked provider.
-  - [ ] Integration: golden files for prompt → response mapping with deterministic mock.
-- [ ] **Acceptance**: With flag on, grouping quality improves; stays within 2–6 steps and references only provided IDs.
+  - [x] Unit: schema validation; retry logic via mocked provider.
+  - [x] Integration: golden files for prompt → response mapping with deterministic mock.
+- [x] **Acceptance**: With flag on, grouping quality improves; stays within 2–6 steps and references only provided IDs.
 
 ---
 
 ## Phase 6 — Step Renderer UI (Read-only)
 - **Goal**: Render steps and linked diffs.
 - **Scope**:
-  - [ ] Left rail: step list with progress.
-  - [ ] Main panel: title, description, objective; `react-diff-view` filtered by `hunk_ids`.
+  - [x] Left rail: step list with progress.
+  - [x] Main panel: title, description, objective; `react-diff-view` filtered by `hunk_ids`.
 - **Deliverables**:
-  - [ ] Navigable read-only step view.
+  - [x] Navigable read-only step view.
 - **Tests**:
-  - [ ] Component tests with fixture data.
-- [ ] **Acceptance**: User sees steps and associated diffs; no notes/gamification yet.
+  - [x] Component tests with fixture data.
+- [x] **Acceptance**: User sees steps and associated diffs; no notes/gamification yet.
 
 ---
 

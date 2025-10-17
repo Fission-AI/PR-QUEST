@@ -1,0 +1,25 @@
+diff --git a/src/utils/math.ts b/src/utils/math.ts
+index 1234567..89abcde 100644
+--- a/src/utils/math.ts
++++ b/src/utils/math.ts
+@@ -1,5 +1,7 @@
+-export function add(a: number, b: number) {
+-  return a + b;
+-}
++export function add(a: number, b: number) {
++  return a + b + 1;
++}
++
++export function subtract(a: number, b: number) {
++  return a - b;
++}
+@@ -12,7 +14,9 @@ export function multiply(a: number, b: number) {
+ }
+
+ export function divide(a: number, b: number) {
+-  return a / b;
++  if (b === 0) {
++    throw new Error("Cannot divide by zero.");
++  }
++  return a / b;
+ }
