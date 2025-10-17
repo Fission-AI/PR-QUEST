@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
 
@@ -30,31 +29,6 @@ export default function RootLayout({
           <span className="pixel-sparkle pixel-sparkle--three" />
         </div>
         <div className="relative z-10 flex min-h-screen flex-col gap-6 px-4 py-6 md:px-8">
-          <header className="mx-auto w-full max-w-5xl">
-            <div className="pixel-panel flex flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
-              <Link className="pixel-heading text-base" href="/">
-                PR QUEST
-              </Link>
-              <nav className="flex flex-wrap gap-3">
-                <Link
-                  className="pixel-button"
-                  href="https://github.com/fission-cmd/PR-QUEST/blob/main/ROADMAP.md"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Roadmap
-                </Link>
-                <Link
-                  className="pixel-button"
-                  href="https://github.com/fission-cmd/PR-QUEST/blob/main/PRD.md"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  PRD
-                </Link>
-              </nav>
-            </div>
-          </header>
           <main className="flex-1">
             <div className="mx-auto w-full max-w-5xl">{children}</div>
           </main>
