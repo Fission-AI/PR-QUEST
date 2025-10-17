@@ -19,7 +19,7 @@ function AnalyzeButton({ enabled }: { enabled: boolean }) {
 
   return (
     <button type="submit" className="pixel-button hero__cta-button" aria-disabled={!enabled || pending} disabled={!enabled || pending}>
-      {pending ? "Checking…" : "Begin your quest →"}
+      {pending ? "Analyzing…" : "Begin your quest →"}
     </button>
   );
 }
@@ -27,6 +27,7 @@ function AnalyzeButton({ enabled }: { enabled: boolean }) {
 export function PrUrlIntakeCard({ id }: PrUrlIntakeCardProps) {
   const [inputValue, setInputValue] = useState("");
   const [state, formAction] = useActionState(validatePrAction, initialState);
+  const [analyzing, setAnalyzing] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -61,20 +62,8 @@ export function PrUrlIntakeCard({ id }: PrUrlIntakeCardProps) {
       return state.message;
     }
 
-    if (state.status === "success" && state.result) {
-      const stepCount = state.result.reviewPlan.steps.length;
-      const mode =
-        state.result.groupingMode === "llm"
-          ? "LLM planner"
-          : state.result.groupingMode === "llm-fallback"
-            ? "LLM fallback"
-            : "heuristic baseline";
-
-      if (stepCount === 0) {
-        return `Review plan is ready via ${mode}, but no code changes were detected.`;
-      }
-
-      return `Review plan ready: ${stepCount} step${stepCount === 1 ? "" : "s"} via ${mode}.`;
+    if (analyzing) {
+      return "Analyzing pull request… This can take a few seconds.";
     }
 
     return clientParse.ok ? "Looks good — ready to analyze this pull request." : "Paste a public GitHub PR URL to begin.";
@@ -109,6 +98,13 @@ export function PrUrlIntakeCard({ id }: PrUrlIntakeCardProps) {
     }
   }, [state.status, state.result, router, searchParams]);
 
+  // Clear analyzing overlay on error or when input changes after an error
+  useEffect(() => {
+    if (state.status === "error") {
+      setAnalyzing(false);
+    }
+  }, [state.status]);
+
   return (
     <>
       <section id={id} className="quest-card" aria-labelledby="quest-card-title">
@@ -126,7 +122,7 @@ export function PrUrlIntakeCard({ id }: PrUrlIntakeCardProps) {
           Paste a public GitHub PR URL to begin your interactive walkthrough.
         </p>
         {state.status === "success" && state.result ? null : null}
-        <form action={formAction} className="quest-card__form">
+        <form action={formAction} className="quest-card__form" onSubmit={() => setAnalyzing(true)}>
           <label className="sr-only" htmlFor="prUrl">
             GitHub pull request URL
           </label>
@@ -170,6 +166,16 @@ export function PrUrlIntakeCard({ id }: PrUrlIntakeCardProps) {
           </a>
         </p>
       </section>
+      {/* Full-screen analyzing overlay */}
+      {analyzing ? (
+        <div className="analyzing-overlay" role="dialog" aria-modal="true" aria-labelledby="analyzing-title">
+          <div className="retro-card analyzing-card">
+            <div className="analyzing-card__spinner" aria-hidden />
+            <h2 id="analyzing-title" className="pixel-heading analyzing-card__title">Analyzing PR…</h2>
+            <p className="analyzing-card__desc">Fetching diff and planning your review steps.</p>
+          </div>
+        </div>
+      ) : null}
       {/* Step viewer is now on /review page */}
     </>
   );

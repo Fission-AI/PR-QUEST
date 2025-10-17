@@ -283,6 +283,54 @@ code {
   box-shadow: 6px 6px 0 rgba(43, 33, 18, 0.4);
 }
 
+/* Analyzing overlay */
+.analyzing-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244, 239, 227, 0.85);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+}
+
+.analyzing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 560px;
+  text-align: center;
+}
+
+.analyzing-card__title {
+  font-size: 14px;
+  margin: 0;
+}
+
+.analyzing-card__desc {
+  font-size: 13px;
+  color: var(--color-muted-brown);
+  margin: 0;
+}
+
+.analyzing-card__spinner {
+  width: 46px;
+  height: 46px;
+  border: 5px solid rgba(43, 33, 18, 0.18);
+  border-top-color: var(--color-sky);
+  border-radius: 999px;
+  animation: spin 900ms linear infinite;
+  box-shadow: 3px 3px 0 rgba(43, 33, 18, 0.2);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .hero__cta-note {
   font-size: 13px;
   color: var(--color-muted-brown);
@@ -485,8 +533,8 @@ code {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 1400px;
-  width: 95%;
+  max-width: 1800px;
+  width: 98%;
   box-sizing: border-box;
 }
 
@@ -574,8 +622,8 @@ code {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
-  max-width: 1400px;
-  width: 95%;
+  max-width: 1800px;
+  width: 98%;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -716,8 +764,8 @@ code {
   gap: 1rem;
   padding: 1.25rem 2rem;
   margin: 1rem auto 0;
-  max-width: 1400px;
-  width: 95%;
+  max-width: 1800px;
+  width: 98%;
   box-sizing: border-box;
   position: relative;
   z-index: 10;

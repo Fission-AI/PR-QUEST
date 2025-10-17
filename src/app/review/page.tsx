@@ -73,7 +73,7 @@ export default async function ReviewPage({ searchParams }: { searchParams: { prU
     return (
       <div className="home-shell">
         <div className="retro-card" role="alert">
-          <p>We couldn't load the review plan: {result.error}</p>
+          <p>We couldn&apos;t load the review plan: {result.error}</p>
           <p>
             <Link className="pixel-button" href="/">Try a different PR</Link>
           </p>
@@ -85,7 +85,7 @@ export default async function ReviewPage({ searchParams }: { searchParams: { prU
   const initial = Number(searchParams.step ?? "0") || 0;
 
   return (
-    <div className="home-shell" style={{ maxWidth: 1200 }}>
+    <div className="home-shell" style={{ maxWidth: 1920 }}>
       {/* Client wrapper to sync step param */}
       {/* We keep this component server-rendered but StepViewer is a client component */}
       <StepViewerClientWrapper prUrl={prUrl} initialStepIndex={initial} planAndDiff={result} />

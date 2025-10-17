@@ -1,6 +1,6 @@
 import type { DiffFileEntry, DiffIndex, DiffFileStatus } from "./diff-index";
 import { ReviewPlanSchema, type Priority } from "./review-plan-schema";
-import type { ReviewPlan } from "./review-plan-schema";
+import type { ReviewPlan, ReviewStep } from "./review-plan-schema";
 
 export { ReviewPlanSchema } from "./review-plan-schema";
 export type { ReviewPlan, ReviewStep } from "./review-plan-schema";

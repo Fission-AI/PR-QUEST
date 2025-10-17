@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { PrUrlIntakeCard } from "./pr-url-intake-card";
 
 export default function Home() {
@@ -12,7 +13,9 @@ export default function Home() {
 
       </section>
 
-      <PrUrlIntakeCard id="start-your-quest" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <PrUrlIntakeCard id="start-your-quest" />
+      </Suspense>
     </div>
   );
 }

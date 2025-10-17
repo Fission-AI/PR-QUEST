@@ -29,7 +29,7 @@ const RawGroupingMetadataSchema = z
   .partial();
 
 function normalizeMetadata(metadata: z.infer<typeof RawGroupingMetadataSchema>) {
-  const normalized: GroupingMetadata = {};
+  const normalized: { prTitle?: string; prDescription?: string } = {};
 
   if (metadata.prTitle) {
     const trimmed = metadata.prTitle.trim();

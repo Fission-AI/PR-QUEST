@@ -13,7 +13,6 @@ type AnyRecord = Record<string, unknown>;
 
 function getEnv(name: string): string | undefined {
   try {
-    // @ts-expect-error env existence varies across server/client
     return typeof process !== "undefined" && process?.env ? process.env[name] : undefined;
   } catch {
     return undefined;
@@ -23,7 +22,6 @@ function getEnv(name: string): string | undefined {
 function getPublicEnv(name: string): string | undefined {
   try {
     // On client, NEXT_PUBLIC_* are inlined by Next.js
-    // @ts-expect-error env existence varies across server/client
     return typeof process !== "undefined" && process?.env ? process.env[name] : undefined;
   } catch {
     return undefined;
